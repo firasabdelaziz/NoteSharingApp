@@ -1,9 +1,5 @@
 ### TO DO
 
-#### Project Setup
-- 🚀 Set up a new React Native project using Expo.
-- 📦 Install required dependencies: `firebase`, `react-navigation`, `react-navigation-stack`.
-- 🔗 Integrate Firebase for authentication and Firestore for the database.
 
 #### Authentication
 - 🤖 Implement screens for user registration and login.
