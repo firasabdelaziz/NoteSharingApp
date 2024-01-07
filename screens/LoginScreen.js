@@ -1,89 +1,100 @@
-// components/LoginScreen.js
-import React, { useState, useMemo } from "react";
-import { View, StyleSheet, TextInput, Keyboard, Text } from "react-native";
+import React from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../styles/globalStyles";
+import { Alert, TextInput } from "react-native";
+import { Formik } from "formik";
 import GlobalView from "../components/GlobalView";
 import Header from "../components/Header";
 import MiddleSection from "../components/MiddleSection";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
+import GoogleButton from "../components/GoogleButton";
+import Password from "../components/Password";
+import BackButton from "../components/BackButton"; // Import the BackButton component
+import ErrorMessage from "../components/ErrorMessage";
+import useKeyboardHandling from "../hooks/useKeyboardHandling";
+import usePasswordToggle from "../hooks/usePasswordToggle";
+import { globalStyles } from "../styles/globalStyles";
+import ValidationFactory from "../validation/validationFactory";
+import { useNavigation } from "@react-navigation/native";
+import { login } from "../services/login";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const keyboardStatus = useKeyboardHandling();
+  const [showPassword, togglePassword] = usePasswordToggle();
+  const validationSchema = ValidationFactory.createLoginForm();
 
-  // Keyboard handling
-  const [keyboardStatus, setKeyboardStatus] = useState(false);
-  const showSubscription = useMemo(
-    () =>
-      Keyboard.addListener("keyboardDidShow", () => {
-        setKeyboardStatus(true);
-      }),
-    []
-  );
-
-  const hideSubscription = useMemo(
-    () =>
-      Keyboard.addListener("keyboardDidHide", () => {
-        setKeyboardStatus(false);
-      }),
-    []
-  );
-
-  useMemo(() => {
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, [showSubscription, hideSubscription]);
+  const handleSignIn = async (email, password) => {
+    try {
+      const user = await login(email, password);
+      console.log(user);
+      // If login is successful, navigate to the "Home" screen
+      navigation.navigate("Home");
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
 
   return (
-    <KeyboardAwareScrollView
-      keyboardShouldPersistTaps="handled"
-      scrollEnabled={keyboardStatus}
+    <Formik
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      validationSchema={validationSchema}
+      onSubmit={(values, actions) => {
+        console.log(values);
+        handleSignIn(values.email, values.password);
+        actions.resetForm();
+      }}
     >
-      <GlobalView>
-        <Header />
-        <MiddleSection
-          style={{ flex: 0.2, paddingBottom: 40, }}
-          title="Login with As"
-        />
-        <Footer>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Login"
-          />
-
-          <TextInput
-            style={globalStyles.inputText}
-            placeholder="Password"
-            secureTextEntry
-          />
-
-          <Button
-            onPress={() => {
-              // Implement login logic here
-              navigation.navigate("Home"); // Navigate to the home screen upon successful login
-            }}
-            text="Login"
-          />
-        </Footer>
-      </GlobalView>
-    </KeyboardAwareScrollView>
+      {({ handleChange, handleSubmit, values, errors, touched }) => (
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="handled"
+          scrollEnabled={keyboardStatus}
+        >
+          <GlobalView>
+            <BackButton callback={() => navigation.navigate("Welcome")} />
+            {/* Login Header */}
+            <Header />
+            {/* Login Title */}
+            <MiddleSection
+              style={{ flex: 0.2, paddingBottom: 40 }}
+              title="Login with as"
+            />
+            {/* Login Form */}
+            <Footer>
+              <TextInput
+                style={globalStyles.inputText}
+                placeholder="Email"
+                value={values.email}
+                onChangeText={handleChange("email")}
+              />
+              {errors.email && touched.email && (
+                <ErrorMessage errorText={errors.email} />
+              )}
+              <Password
+                value={values.password}
+                placeholder={"Password"}
+                onChangeText={handleChange("password")}
+                showPassword={showPassword}
+                togglePassword={togglePassword}
+              />
+              {errors.password && touched.password && (
+                <ErrorMessage errorText={errors.password} />
+              )}
+              <Button
+                onPress={() => {
+                  handleSubmit();
+                  // navigation.navigate("Home");
+                }}
+                text="Login"
+              />
+              <GoogleButton onPress={() => {}} text="Login with google " />
+            </Footer>
+          </GlobalView>
+        </KeyboardAwareScrollView>
+      )}
+    </Formik>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    width: "85%",
-    height: 45,
-    borderWidth: 1,
-    borderColor: "#0185da",
-    borderRadius: 5,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-  },
-
-});

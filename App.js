@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { createContext, useCallback, useContext, useEffect,useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -13,12 +13,36 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 
 SplashScreen.preventAutoHideAsync();
 
+const AuthenticatedUserContext = createContext({});
+
+const AuthenticatedUserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (authenticatedUser) => {
+      setUser(authenticatedUser);
+      setInitializing(false);
+    });
+
+    return () => {
+      unsubscribeAuth();
+    };
+  }, []);
+
+
+  return (
+    <AuthenticatedUserContext.Provider value={{ user, initializing }}>
+      {children}
+    </AuthenticatedUserContext.Provider>
+  );
+};
+
 export default function App() {
 
   const Stack = createNativeStackNavigator();
-  const auth = getAuth(app);
-  const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState(null);
+  const { user, initializing } = useContext(AuthenticatedUserContext);
 
   const [fontsLoaded] = useFonts({
     "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
@@ -34,21 +58,6 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
-  // Handle user state changes
-  const onAuthStateChangedHandler = (user) => {
-    setUser(user);
-    if (initializing) {
-      setInitializing(false);
-    }
-  };
-
-  useEffect(() => {
-    // Subscribe to the authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, onAuthStateChangedHandler);
-
-    // Clean up the subscription when the component unmounts
-    return () => unsubscribe();
-  }, []);
 
   // If Firebase is still initializing, show a loading message
   if (initializing) {
@@ -65,6 +74,7 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <AuthenticatedUserProvider>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -84,6 +94,7 @@ export default function App() {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+    </AuthenticatedUserProvider>
     </View>
   );
 }
