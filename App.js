@@ -1,28 +1,75 @@
-import React, { createContext, useCallback, useContext, useEffect,useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { app } from "./services/config"; 
+import { app } from "./services/config";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
+import { AuthContext } from "./context/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
-const AuthenticatedUserContext = createContext({});
-
-const AuthenticatedUserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export default function App() {
+  const Stack = createNativeStackNavigator();
   const [initializing, setInitializing] = useState(true);
   const auth = getAuth(app);
 
+  /** STATE use Reducer */
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case "RESTORE_TOKEN":
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case "SIGN_IN":
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case "SIGN_OUT":
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  );
+
+  /** STATE use Memo */
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (data) => {
+        dispatch({ type: "SIGN_IN", token: data });
+      },
+      signOutContext: () => dispatch({ type: "SIGN_OUT" }),
+    }),
+    []
+  );
+
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (authenticatedUser) => {
-      setUser(authenticatedUser);
+      dispatch({ type: "RESTORE_TOKEN", token: authenticatedUser });
       setInitializing(false);
     });
 
@@ -30,19 +77,6 @@ const AuthenticatedUserProvider = ({ children }) => {
       unsubscribeAuth();
     };
   }, []);
-
-
-  return (
-    <AuthenticatedUserContext.Provider value={{ user, initializing }}>
-      {children}
-    </AuthenticatedUserContext.Provider>
-  );
-};
-
-export default function App() {
-
-  const Stack = createNativeStackNavigator();
-  const { user, initializing } = useContext(AuthenticatedUserContext);
 
   const [fontsLoaded] = useFonts({
     "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
@@ -57,7 +91,6 @@ export default function App() {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
-
 
   // If Firebase is still initializing, show a loading message
   if (initializing) {
@@ -74,27 +107,27 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-    <AuthenticatedUserProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {user ? (
-            // If the user is authenticated, show the HomeScreen
-            <Stack.Screen name="Home" component={HomeScreen} />
-          ) : (
-            // If the user is not authenticated, show the Login and Register screens
-            <>
-              <Stack.Screen name="Welcome" component={WelcomeScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthenticatedUserProvider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            {state.userToken ? (
+              // If the user is authenticated, show the HomeScreen
+              <Stack.Screen name="Home" component={HomeScreen} />
+            ) : (
+              // If the user is not authenticated, show the Login and Register screens
+              <>
+                <Stack.Screen name="Welcome" component={WelcomeScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Register" component={RegisterScreen} />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
     </View>
   );
 }

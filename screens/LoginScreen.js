@@ -16,20 +16,21 @@ import usePasswordToggle from "../hooks/usePasswordToggle";
 import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
-import { login } from "../services/login";
+import loginService from "../services/loginService";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
   const keyboardStatus = useKeyboardHandling();
   const [showPassword, togglePassword] = usePasswordToggle();
   const validationSchema = ValidationFactory.createLoginForm();
+  const loginFunctions=loginService();
 
   const handleSignIn = async (email, password) => {
     try {
-      const user = await login(email, password);
+      const user = loginFunctions.login(email, password);
       console.log(user);
       // If login is successful, navigate to the "Home" screen
-      navigation.navigate("Home");
+      //navigation.navigate("Home");
     } catch (error) {
       Alert.alert(error);
     }

@@ -17,17 +17,18 @@ import usePasswordToggle from "../hooks/usePasswordToggle";
 import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
-import { signup } from "../services/signup";
+import signupService from '../services/signupService';
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
   const keyboardStatus = useKeyboardHandling();
   const [showPassword, togglePassword] = usePasswordToggle();
   const validationSchema = ValidationFactory.createRegistrationForm();
+  const signupFunctions=signupService();
 
   const handleSignup = async (email, password) => {
     try {
-      const user = await signup(email, password);
+      const user = signupFunctions.signup(email, password);
       console.log(user);
     } catch (error) {
       Alert.alert(error);
