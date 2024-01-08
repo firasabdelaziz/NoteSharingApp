@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useMemo, useCallback } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app } from './services/config';
+import { app } from '../services/config';
+import * as SplashScreen from 'expo-splash-screen';
 
 const initialState = {
   isLoading: true,
@@ -56,6 +57,7 @@ export const useAuth = () => {
           type: 'RESTORE_TOKEN',
           token: authenticatedUser?.stsTokenManager?.accessToken,
         });
+        SplashScreen.hideAsync();
       } else {
         dispatch({ type: 'RESTORE_TOKEN', token: null });
       }

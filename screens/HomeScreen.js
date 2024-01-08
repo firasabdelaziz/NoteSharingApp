@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
+  Pressable,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import signoutService from "../services/signoutService";
@@ -20,7 +21,6 @@ import Modal from "react-native-modal";
 import { globalStyles } from "../styles/globalStyles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useKeyboardHandling from "../hooks/useKeyboardHandling";
-
 
 export default function HomeScreen() {
   const [newNote, setNewNote] = useState("");
@@ -54,7 +54,7 @@ export default function HomeScreen() {
 
   const renderPlayerNote = (playerIndex, playerNote) => {
     return (
-      <View style={{ flexDirection:'column',alignItems:'center' }}>
+      <View style={{ flexDirection: "column", alignItems: "center" }}>
         <TouchableOpacity
           style={styles.card}
           onPress={() => playerNote === "" && handleCardPress(playerIndex)}
@@ -63,9 +63,7 @@ export default function HomeScreen() {
             <Ionicons name="cafe" size={30} color="#0185da" />
           ) : (
             <>
-              <Text style={styles.cardText}>
-                Note: {playerNote}
-              </Text>
+              <Text style={styles.cardText}>Note: {playerNote}</Text>
             </>
           )}
         </TouchableOpacity>
@@ -78,7 +76,6 @@ export default function HomeScreen() {
     setSelectedCard(index);
     setModalVisible(true);
   };
-  
 
   return (
     <GlobalView>
@@ -108,28 +105,46 @@ export default function HomeScreen() {
             setModalVisible(!modalVisible);
           }}
         >
-          
-          <KeyboardAwareScrollView  keyboardShouldPersistTaps="handled"scrollEnabled={keyboardStatus} contentContainerStyle={styles.modalContainer}>
+          <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="handled"
+            scrollEnabled={keyboardStatus}
+            contentContainerStyle={styles.modalContainer}
+          >
             <Text style={globalStyles.midTexts}>Add Note here : </Text>
             <TextInput
-              style={[globalStyles.inputText,{ alignSelf:'center' ,marginTop: 7}]}
+              style={[
+                globalStyles.inputText,
+                { alignSelf: "center", marginTop: 7 },
+              ]}
               placeholder="Enter new note"
-              keyboardType = 'numeric'
+              keyboardType="numeric"
               onChangeText={(text) => setNewNote(text)}
             />
             <Button
-                style={{ alignSelf:'center' }}
-                onPress={handleNoteUpdate}
-                text="Update Note"
+              style={{ alignSelf: "center" }}
+              onPress={handleNoteUpdate}
+              text="Update Note"
             />
-            <Button style={{ marginTop: 7,backgroundColor:'#B22222',alignSelf:'center' }} text="Close Modal" onPress={() => setModalVisible(false)} />
-
+            <Button
+              style={{
+                marginTop: 7,
+                backgroundColor: "#B22222",
+                alignSelf: "center",
+              }}
+              text="Close Modal"
+              onPress={() => setModalVisible(false)}
+            />
           </KeyboardAwareScrollView>
         </Modal>
 
-        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-          <Text style={styles.signOutButtonText}>Sign Out</Text>
-        </TouchableOpacity>
+          <View style={styles.bodyLogout}>
+            <Pressable onPress={handleSignOut}>
+              <View style={styles.logoutAlign}>
+                <Ionicons name="log-out-outline" size={20} color="#B22222" />
+                <Text style={styles.textLogout}>logout</Text>
+              </View>
+            </Pressable>
+          </View>
       </Footer>
     </GlobalView>
   );
@@ -186,8 +201,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 25,
     width: "85%",
-    height:"50%",
-    alignItems:'center',justifyContent:'center', 
+    height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     height: 40,
@@ -195,5 +211,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
+  },
+
+  bodyLogout: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    padding: 10,
+    borderRadius: 5,
+    position: 'absolute', 
+    bottom: 10
+  },
+  logoutAlign: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textLogout: {
+    fontFamily: "Poppins-Medium",
+    color: "#B22222",
+    alignSelf: "center",
+    top: 2,
+    padding: 6,
   },
 });
