@@ -114,7 +114,6 @@ export default function HomeScreen() {
             <TextInput
               style={[globalStyles.inputText,{ alignSelf:'center' ,marginTop: 7}]}
               placeholder="Enter new note"
-              value={newNote}
               keyboardType = 'numeric'
               onChangeText={(text) => setNewNote(text)}
             />
