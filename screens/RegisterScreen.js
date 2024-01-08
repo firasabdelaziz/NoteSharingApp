@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Alert, TextInput } from "react-native";
 import { Formik } from "formik";
@@ -18,6 +18,7 @@ import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
 import signupService from '../services/signupService';
+import * as Google from 'expo-auth-session/providers/google';
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ export default function RegistrationScreen() {
   const [showPassword, togglePassword] = usePasswordToggle();
   const validationSchema = ValidationFactory.createRegistrationForm();
   const signupFunctions=signupService();
+
 
   const handleSignup = async (email, password) => {
     try {
@@ -34,6 +36,27 @@ export default function RegistrationScreen() {
       Alert.alert(error);
     }
   };
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: '255827994636-t3ch2q9ucuddnllco66bb2srdnt8kpco.apps.googleusercontent.com',
+    webClientId: '255827994636-1o3bp02vn8osidit3luuainuvpgllv9j.apps.googleusercontent.com',
+  });
+
+  const signUpWithGoogle = async () => {
+    try {
+      promptAsync();
+    } catch (error) {
+      console.log('Error:', error);
+      Alert.alert('Error during login', error.message);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      console.log(response);
+    }
+  }, [response]);
 
   return (
     <Formik
@@ -93,9 +116,10 @@ export default function RegistrationScreen() {
               )}
               <Button
                 onPress={() => {
-                  handleSubmit();
-                  // navigation.navigate("Home");
-                }}
+                  console.log('here');
+
+                  signUpWithGoogle()
+              }}
                 text="Register"
               />
               <GoogleButton

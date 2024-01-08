@@ -69,10 +69,15 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (authenticatedUser) => {
-      dispatch({ type: "RESTORE_TOKEN", token: authenticatedUser });
+      if (authenticatedUser) {
+        dispatch({ type: "RESTORE_TOKEN", token: authenticatedUser?.stsTokenManager?.accessToken });
+        SplashScreen.hideAsync();
+      } else {
+        dispatch({ type: "RESTORE_TOKEN", token: null });
+      }
       setInitializing(false);
     });
-
+  
     return () => {
       unsubscribeAuth();
     };
@@ -104,7 +109,6 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <AuthContext.Provider value={authContext}>
