@@ -17,6 +17,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
 - [Firebase Configuration](#firebase-configuration)
 - [Firestore Integration](#firestore-integration)
 - [State Management](#state-management)
+- [Demo](#demo)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -182,6 +183,11 @@ The `LoginScreen` component facilitates user login, featuring email and password
 ### Home Screen
 
 The `HomeScreen` component displays collaborative notes among users. It integrates with Firebase Firestore for real-time updates of player notes. Users can update their notes and sign out.
+
+## Demo 📹
+
+Check out the [demo](#https://www.loom.com/share/b7c47b6e2d5a411db78ac17dac9feaa0) to see SharingNoteApp in action!
+
 
 ## Contributing 🤝
 
