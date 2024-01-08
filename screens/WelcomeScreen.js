@@ -11,7 +11,6 @@ import MiddleSection from "../components/MiddleSection";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 
-// WelcomeScreen component that combines all the components
 const WelcomeScreen = () => {
   const navigation = useNavigation();
 

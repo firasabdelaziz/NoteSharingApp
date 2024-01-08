@@ -18,7 +18,6 @@ const signoutService = () => {
       //GoogleSignin.signOut();
       console.log("User signed out");
       signOutContext();
-      // You can perform additional actions after signing out, if needed
     } catch (error) {
       console.log("Error:", error);
       Alert.alert("Error during sign-out", error.message);

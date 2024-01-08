@@ -1,4 +1,3 @@
-// HomeScreen.js
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -32,7 +31,6 @@ export default function HomeScreen() {
 
   const handleNoteUpdate = () => {
     if (selectedCard !== null) {
-      console.log(selectedCard);
       updatePlayerNote(selectedCard, newNote);
       setNewNote(null);
       setModalVisible(false);
@@ -79,9 +77,7 @@ export default function HomeScreen() {
 
   return (
     <GlobalView>
-      {/* Login Header */}
       <Header />
-      {/* Login Title */}
       <MiddleSection
         style={{ flex: 0.2, paddingBottom: 40 }}
         title="Collaboration Notes"

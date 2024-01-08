@@ -3,9 +3,9 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 // Configure Google Sign-In
 GoogleSignin.configure({
-  androidClientId: "your_android_client_id",
-  webClientId: "your_web_client_id",
-  iosClientId: "your_ios_client_id",
+  androidClientId: "255827994636-t3ch2q9ucuddnllco66bb2srdnt8kpco.apps.googleusercontent.com",
+  webClientId: "255827994636-1o3bp02vn8osidit3luuainuvpgllv9j.apps.googleusercontent.com",
+  iosClientId: "255827994636-t3ch2q9ucuddnllco66bb2srdnt8kpco.apps.googleusercontent.com",
 });
 
 const signInWithGoogle = async () => {

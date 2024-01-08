@@ -12,12 +12,9 @@ const signupService = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log('User registered:', user);
       signIn(userCredential);
-      // You may want to return the user or some indication of successful registration here.
       return user;
     } catch (error) {
-      console.log('Error:', error);
       Alert.alert('Error during signup', error.message);
       throw error; // Rethrow the error to handle it in the component
     }

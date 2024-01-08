@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 import Button from "../components/Button";
 import GoogleButton from "../components/GoogleButton";
 import Password from "../components/Password";
-import BackButton from "../components/BackButton"; // Import the BackButton component
+import BackButton from "../components/BackButton"; 
 import ErrorMessage from "../components/ErrorMessage";
 import useKeyboardHandling from "../hooks/useKeyboardHandling";
 import usePasswordToggle from "../hooks/usePasswordToggle";
@@ -17,7 +17,7 @@ import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
 import loginService from "../services/loginService";
-import signInWithGoogle from "../services/signinGoogle"; // Adjust the path accordingly
+import signInWithGoogle from "../services/signinGoogle"; 
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -29,9 +29,6 @@ export default function LoginScreen() {
   const handleSignIn = async (email, password) => {
     try {
       const user = loginFunctions.login(email, password);
-      console.log(user);
-      // If login is successful, navigate to the "Home" screen
-      //navigation.navigate("Home");
     } catch (error) {
       Alert.alert(error);
     }
@@ -42,7 +39,6 @@ export default function LoginScreen() {
   const signinwithgoogle = async () => {
     try {
       const user = await signInWithGoogle();
-      console.log(user);
     } catch (error) {
       console.log(error);
     }
@@ -99,7 +95,6 @@ export default function LoginScreen() {
               <Button
                 onPress={() => {
                   handleSubmit();
-                  // navigation.navigate("Home");
                 }}
                 text="Login"
               />

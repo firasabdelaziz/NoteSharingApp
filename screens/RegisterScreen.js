@@ -18,7 +18,7 @@ import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
 import signupService from "../services/signupService";
-import signInWithGoogle from "../services/signinGoogle"; // Adjust the path accordingly
+import signInWithGoogle from "../services/signinGoogle"; 
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
@@ -41,7 +41,6 @@ export default function RegistrationScreen() {
   const handleSignup = async (email, password) => {
     try {
       const user = signupFunctions.signup(email, password);
-      console.log(user);
     } catch (error) {
       Alert.alert(error);
     }
@@ -67,12 +66,14 @@ export default function RegistrationScreen() {
         >
           <GlobalView>
             <BackButton callback={() => navigation.navigate("Welcome")} />
+            {/* Register Header */}
             <Header />
-            {/** */}
+            {/* Register Title */}
             <MiddleSection
               style={{ flex: 0.2, paddingBottom: 40 }}
               title="Register with as"
             />
+            {/* Register Form */}
             <Footer>
               <TextInput
                 style={globalStyles.inputText}
