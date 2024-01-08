@@ -2,12 +2,13 @@
 
 import { useEffect,useMemo } from "react";
 import { getFirestore, collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { debounce } from 'lodash';
 
 export const useFirestore = (onDataUpdate) => {
   useEffect(() => {
     const dbFS = getFirestore();
     const pokerPlanningCollection = collection(dbFS, "PockerPlanning");
-    const unsubscribe = onSnapshot(pokerPlanningCollection, (snapshot) => {
+    const debouncedOnSnapshot = debounce((snapshot) => {
       const updatedData = [];
       snapshot.forEach((doc) => {
         updatedData.push({ id: doc.id, ...doc.data() });
@@ -16,7 +17,9 @@ export const useFirestore = (onDataUpdate) => {
       // Notify players of updates using a pop-up notification (use your preferred notification method).
       // For example, you can use Expo Notifications API.
       // HandleNotifications(updatedData); // Implement HandleNotifications function as needed
-    });
+    }, 1000); // Adjust the debounce delay as needed (e.g., 1000 milliseconds)
+
+    const unsubscribe = onSnapshot(pokerPlanningCollection, debouncedOnSnapshot);
 
     // Clean up the subscription when the component unmounts
     return () => unsubscribe();
