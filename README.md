@@ -1,11 +1,10 @@
-# SharingNoteApp
-
+# SharingNoteApp 📝
 
 ## Overview
 
 SharingNoteApp is a dynamic and real-time multiplayer note-sharing application built using React Native Expo and Firestore. The app enables users to register and log in with email and Gmail, providing a seamless and collaborative environment for sharing and updating numeric notes.
 
-## Table of Contents
+## Table of Contents 📋
 
 - [Getting Started](#getting-started)
 - [Key Features](#key-features)
@@ -21,7 +20,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
 - [Contributing](#contributing)
 - [License](#license)
 
-## Getting Started
+## Getting Started 🚀
 
 ### Prerequisites
 
@@ -49,7 +48,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
    npm start
    ```
 
-## Key Features
+## Key Features 🔑
 
 - Authentication with email and Gmail
 - Real-time note sharing among multiple users
@@ -60,7 +59,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
 - Reusable components for consistent UI across screens
 - Separate styles for easy maintenance and theming
 
-## File Structure
+## File Structure 📁
 
 ```
 ├── assets/
@@ -104,7 +103,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
 └── TODO.md
 ```
 
-## Technical Patterns
+## Technical Patterns 🔄
 
 ### Provider Design Pattern
 
@@ -114,11 +113,11 @@ Authentication is managed using the Provider design pattern with the `AuthContex
 
 Validation is handled using the Factory design pattern in `validationFactory.js`.
 
-### Hooks
+### Hooks ⚓
 
 Several custom hooks are used, including `useFirestore`, `useKeyboardHandling`, and `usePasswordToggle` for enhanced functionality.
 
-## Authentication
+## Authentication 🔐
 
 The app uses Firebase Authentication for user registration and login. It supports both email/password and Gmail login.
 
@@ -126,11 +125,11 @@ The app uses Firebase Authentication for user registration and login. It support
 
 The authentication context is managed using React's `useReducer` hook and provides actions for signing in and signing out.
 
-### State Management
+### State Management 🔄
 
 The app utilizes the `useAuth` hook for managing the authentication state. It includes a reducer for handling authentication actions and an auth context for sharing authentication details throughout the app.
 
-## Services
+## Services 🛠️
 
 ### Signup Service
 
@@ -148,7 +147,7 @@ The `signInWithGoogle` service allows users to sign in using their Google accoun
 
 The `loginService` provides the functionality to log in a user using Firebase's `signInWithEmailAndPassword`.
 
-## Hooks
+## Hooks ⚓
 
 ### Password Toggle Hook
 
@@ -158,15 +157,15 @@ The `usePasswordToggle` hook manages the visibility of the password input in log
 
 The `useKeyboardHandling` hook tracks the keyboard status, allowing components to respond to its visibility changes.
 
-## Firebase Configuration
+## Firebase Configuration ⚙️
 
 Firebase is configured in the `config.js` file, including initialization of Firestore and Authentication modules.
 
-## Firestore Integration
+## Firestore Integration 📊
 
 The `useFirestore` hook is responsible for listening to changes in the Firestore database, specifically in the "PockerPlanning" collection.
 
-## Screens
+## Screens 📱
 
 ### Welcome Screen
 
@@ -184,11 +183,10 @@ The `LoginScreen` component facilitates user login, featuring email and password
 
 The `HomeScreen` component displays collaborative notes among users. It integrates with Firebase Firestore for real-time updates of player notes. Users can update their notes and sign out.
 
-## Contributing
+## Contributing 🤝
 
 We welcome contributions! Please check out the [Contribution Guidelines](CONTRIBUTING.md) for more details.
 
-## License
+## License 📄
 
 This project is licensed under the [MIT License](LICENSE).
-
