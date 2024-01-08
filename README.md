@@ -186,7 +186,7 @@ The `HomeScreen` component displays collaborative notes among users. It integrat
 
 ## Demo 📹
 
-Check out the [demo](#https://www.loom.com/share/b7c47b6e2d5a411db78ac17dac9feaa0) to see SharingNoteApp in action!
+Check out the [demo](https://www.loom.com/share/b7c47b6e2d5a411db78ac17dac9feaa0) to see SharingNoteApp in action!
 
 
 ## Contributing 🤝
