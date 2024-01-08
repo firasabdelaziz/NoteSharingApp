@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "255827994636",
+    "project_id": "notesharingapp-356b0",
+    "storage_bucket": "notesharingapp-356b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255827994636:android:bade1dac71d92406d12629",
+        "android_client_info": {
+          "package_name": "com.firasabdelaziz.NoteSharingApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255827994636-t3ch2q9ucuddnllco66bb2srdnt8kpco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firasabdelaziz.NoteSharingApp",
+            "certificate_hash": "62380d0e5753f8452bc90b56578633c53bd682d7"
+          }
+        },
+        {
+          "client_id": "255827994636-1o3bp02vn8osidit3luuainuvpgllv9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeoMbh4xQrQOd0gmcxqaKVcQPDx2lwztM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255827994636-1o3bp02vn8osidit3luuainuvpgllv9j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255827994636-mpbej46cvvgdm88mhub69cjlki4pei0o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.firasabdelaziz.NoteSharingApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

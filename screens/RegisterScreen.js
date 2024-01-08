@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Alert, TextInput } from "react-native";
+import { Alert, TextInput, Text } from "react-native";
 import { Formik } from "formik";
 import GlobalView from "../components/GlobalView";
 import Header from "../components/Header";
@@ -17,15 +17,25 @@ import usePasswordToggle from "../hooks/usePasswordToggle";
 import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
-import signupService from '../services/signupService';
-import * as Google from 'expo-auth-session/providers/google';
+import signupService from "../services/signupService";
+import signInWithGoogle from "../services/signinGoogle"; // Adjust the path accordingly
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
   const keyboardStatus = useKeyboardHandling();
   const [showPassword, togglePassword] = usePasswordToggle();
   const validationSchema = ValidationFactory.createRegistrationForm();
-  const signupFunctions=signupService();
+  const signupFunctions = signupService();
+
+
+
+  const signinwithgoogle = async () => {
+    try {
+      const user = await signInWithGoogle();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   const handleSignup = async (email, password) => {
@@ -36,27 +46,6 @@ export default function RegistrationScreen() {
       Alert.alert(error);
     }
   };
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: '255827994636-t3ch2q9ucuddnllco66bb2srdnt8kpco.apps.googleusercontent.com',
-    webClientId: '255827994636-1o3bp02vn8osidit3luuainuvpgllv9j.apps.googleusercontent.com',
-  });
-
-  const signUpWithGoogle = async () => {
-    try {
-      promptAsync();
-    } catch (error) {
-      console.log('Error:', error);
-      Alert.alert('Error during login', error.message);
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      console.log(response);
-    }
-  }, [response]);
 
   return (
     <Formik
@@ -116,18 +105,18 @@ export default function RegistrationScreen() {
               )}
               <Button
                 onPress={() => {
-                  console.log('here');
+                  console.log("here");
 
-                  signUpWithGoogle()
-              }}
+                  handleSubmit();
+                }}
                 text="Register"
               />
+
               <GoogleButton
-                onPress={() => {
-                }}
+                onPress={() => signinwithgoogle()}
                 text="Register with google "
               />
-            </Footer>  
+            </Footer>
           </GlobalView>
         </KeyboardAwareScrollView>
       )}

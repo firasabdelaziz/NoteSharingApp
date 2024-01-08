@@ -3,6 +3,9 @@ import { getAuth, signOut } from "firebase/auth";
 import { app } from "./config";
 import { Alert } from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import {
+  GoogleSignin,
+} from "@react-native-google-signin/google-signin";
 
 const signoutService = () => {
   const { signOutContext } = React.useContext(AuthContext);
@@ -10,6 +13,9 @@ const signoutService = () => {
   const signout = async () => {
     try {
       await signOut(auth);
+      // IN TEST 
+      //GoogleSignin.revokeAccess();
+      //GoogleSignin.signOut();
       console.log("User signed out");
       signOutContext();
       // You can perform additional actions after signing out, if needed

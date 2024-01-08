@@ -60,6 +60,7 @@ export const useAuth = () => {
         SplashScreen.hideAsync();
       } else {
         dispatch({ type: 'RESTORE_TOKEN', token: null });
+        SplashScreen.hideAsync();
       }
     });
 

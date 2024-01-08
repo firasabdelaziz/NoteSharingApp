@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect, useMemo} from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Alert, TextInput } from "react-native";
 import { Formik } from "formik";
@@ -17,6 +17,7 @@ import { globalStyles } from "../styles/globalStyles";
 import ValidationFactory from "../validation/validationFactory";
 import { useNavigation } from "@react-navigation/native";
 import loginService from "../services/loginService";
+import signInWithGoogle from "../services/signinGoogle"; // Adjust the path accordingly
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -33,6 +34,17 @@ export default function LoginScreen() {
       //navigation.navigate("Home");
     } catch (error) {
       Alert.alert(error);
+    }
+  };
+
+
+
+  const signinwithgoogle = async () => {
+    try {
+      const user = await signInWithGoogle();
+      console.log(user);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -91,7 +103,7 @@ export default function LoginScreen() {
                 }}
                 text="Login"
               />
-              <GoogleButton onPress={() => {}} text="Login with google " />
+              <GoogleButton onPress={() => signinwithgoogle()} text="Login with google " />
             </Footer>
           </GlobalView>
         </KeyboardAwareScrollView>
