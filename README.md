@@ -26,7 +26,7 @@ SharingNoteApp is a dynamic and real-time multiplayer note-sharing application b
 ### Prerequisites
 
 - Node.js: [Download](https://nodejs.org/)
-- Expo CLI: `npm install -g expo-cli`
+- eas CLI: `npm i -g eas-cli`
 
 ### Installation
 
